@@ -4,6 +4,7 @@ import MyContext from "../context/context";
 
 const BestSeller = () => {
   const { products } = useContext(MyContext);
+
   return (
     <div className="mt-16">
       <p className="text-2xl md:text-3xl font-medium">Best Seller</p>
