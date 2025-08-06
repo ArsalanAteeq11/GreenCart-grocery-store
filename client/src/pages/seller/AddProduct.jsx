@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { assets, categories } from "../../assets/assets";
+import toast from "react-hot-toast";
+import MyContext from "../../context/context";
 
 const AddProduct = () => {
   const [files, setFiles] = useState([]);
@@ -8,9 +10,48 @@ const AddProduct = () => {
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [offerPrice, setOfferPrice] = useState("");
+
+  const { axios } = useContext(MyContext);
+  const onSubmitHandler = async (event) => {
+    try {
+      event.preventDefault();
+      const productData = {
+        name,
+        description: description.split("\n"),
+        category,
+        price,
+        offerPrice,
+      };
+
+      const formData = new FormData();
+      formData.append("productData", JSON.stringify(productData));
+      for (let i = 0; i < files.length; i++) {
+        formData.append("images", files[i]);
+      }
+
+      const { data } = await axios.post("/product/add", formData);
+      if (data.success) {
+        toast.success(data.message);
+        setName("");
+        setDescription("");
+        setCategory("");
+        setPrice("");
+        setOfferPrice("");
+        setFiles([]);
+      } else {
+        toast.error(data.message);
+        console.log("dataaaa", data);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <div className="no-scrollbar flex-1 h-[95vh] overflow-y-scroll flex flex-col justify-between">
-      <form className="md:p-10 p-4 space-y-5 max-w-lg">
+      <form
+        onSubmit={onSubmitHandler}
+        className="md:p-10 p-4 space-y-5 max-w-lg"
+      >
         <div>
           <p className="text-base font-medium">Product Image</p>
           <div className="flex flex-wrap items-center gap-3 mt-2">

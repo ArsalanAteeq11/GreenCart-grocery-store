@@ -38,6 +38,7 @@ export const register = async (req, res) => {
     return res.json({
       success: true,
       user: { email: user.email, name: user.name },
+      message: "User login successfully!",
     });
   } catch (error) {
     console.log(error.message);
@@ -88,8 +89,9 @@ export const login = async (req, res) => {
 //Check isAuth
 export const isAuth = async (req, res) => {
   try {
-    const { userId } = req.body;
-    const user = await User.findById(userId).select("-password");
+    // const { userId } = req.body;
+    // console.log("userId", userId);
+    const user = await User.findById(req.user.id).select("-password");
     return res.json({ success: true, user });
   } catch (error) {
     console.log(error.message);

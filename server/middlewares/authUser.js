@@ -7,13 +7,16 @@ const authUser = async (req, res, next) => {
   }
   try {
     const tokenDecode = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("decodedToken", tokenDecode.id);
     if (tokenDecode.id) {
-      req.body.userId = tokenDecode.id;
+      // req.body.userId = tokenDecode.id;
+      req.user = { id: tokenDecode.id };
     } else {
       return res.json({ success: false, message: "unauthorized" });
     }
     next();
   } catch (error) {
+    console.log("error", error.message);
     res.json({ success: false, message: error.message });
   }
 };

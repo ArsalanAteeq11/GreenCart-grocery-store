@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { assets } from "../assets/assets";
+import { useContext } from "react";
+import MyContext from "../context/context";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 const InputField = ({ type, placeholder, name, handleChange, address }) => (
   <input
@@ -13,9 +17,10 @@ const InputField = ({ type, placeholder, name, handleChange, address }) => (
   />
 );
 const AddAddress = () => {
+  const { axios, navigate, user } = useContext(MyContext);
   const [address, setAddress] = useState({
-    firstname: "",
-    lastname: "",
+    firstName: "",
+    lastName: "",
     email: "",
     street: "",
     city: "",
@@ -25,21 +30,39 @@ const AddAddress = () => {
     phone: "",
   });
 
-  const onSubmitHandler = (e) => {
+  console.log("address", address);
+
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log("Address", address);
-    setAddress({
-      firstname: "",
-      lastname: "",
-      email: "",
-      street: "",
-      city: "",
-      state: "",
-      zipcode: "",
-      country: "",
-      phone: "",
-    });
+    try {
+      const { data } = await axios.post("/address/add", { address });
+      if (data.success) {
+        toast.success(data.message);
+        navigate("/cart");
+        setAddress({
+          firstname: "",
+          lastname: "",
+          email: "",
+          street: "",
+          city: "",
+          state: "",
+          zipcode: "",
+          country: "",
+          phone: "",
+        });
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/cart");
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,14 +80,14 @@ const AddAddress = () => {
               <InputField
                 type="text"
                 placeholder="First Name"
-                name="firstname"
+                name="firstName"
                 handleChange={handleChange}
                 address={address}
               />
               <InputField
                 type="text"
                 placeholder="Last Name"
-                name="lastname"
+                name="lastName"
                 handleChange={handleChange}
                 address={address}
               />

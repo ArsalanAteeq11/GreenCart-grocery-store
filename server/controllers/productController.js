@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
-import Product from "../models/Product";
+import Product from "../models/Product.js";
 
 // Add Product : /product/add
 export const addProduct = async (req, res) => {
@@ -17,9 +17,9 @@ export const addProduct = async (req, res) => {
     );
 
     await Product.create({ ...productData, image: imagesURL });
-    res.json({ success: true });
+    res.json({ success: true, message: "Product Added" });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     res.json({ success: false, message: error.message });
   }
 };
@@ -48,7 +48,7 @@ export const productById = async (req, res) => {
 // Change Product Stock : /product/stock
 export const changeStock = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id, inStock } = req.body;
     await Product.findByIdAndUpdate(id, { inStock });
     res.json({ success: true, message: "Stock Updated" });
   } catch (error) {
