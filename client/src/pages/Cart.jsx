@@ -15,6 +15,7 @@ const Cart = () => {
     currency,
     axios,
     user,
+    setCartItems,
   } = useContext(MyContext);
   const [cartArray, setCartArray] = useState([]);
   console.log("cartArray", cartArray);
@@ -59,7 +60,48 @@ const Cart = () => {
     getAddress();
   }, [user]);
 
-  const placeOrder = () => {};
+  const placeOrder = async () => {
+    try {
+      if (!selectedAddress) {
+        return toast.error("Please select an address");
+      }
+
+      // place order with COD
+      if (paymentOption === "COD") {
+        const { data } = await axios.post("/order/cod", {
+          userId: user._id,
+          items: cartArray.map((item) => ({
+            product: item._id,
+            quantity: item.quantity,
+          })),
+          address: selectedAddress._id,
+        });
+        if (data.success) {
+          toast.success(data.message);
+          setCartItems({});
+          navigate("/my-orders");
+        } else {
+          toast.error(data.message);
+        }
+      } else {
+        const { data } = await axios.post("/order/stripe", {
+          userId: user._id,
+          items: cartArray.map((item) => ({
+            product: item._id,
+            quantity: item.quantity,
+          })),
+          address: selectedAddress._id,
+        });
+        if (data.success) {
+          window.location.replace(data.url);
+        } else {
+          toast.error(data.message);
+        }
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return products.length > 0 && cartItems ? (
     <div className="flex flex-col md:flex-row mt-16">
       <div className="flex-1 max-w-4xl">

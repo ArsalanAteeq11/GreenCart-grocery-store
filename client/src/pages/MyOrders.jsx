@@ -1,17 +1,27 @@
 import React, { useContext, useEffect, useState } from "react";
 import { dummyAddress, dummyOrders } from "../assets/assets";
 import MyContext from "../context/context";
+import toast from "react-hot-toast";
 
 const MyOrders = () => {
   const [myOrders, setMyOrders] = useState([]);
-  const { currency } = useContext(MyContext);
-  const fetchOrders = () => {
-    setMyOrders(dummyOrders);
+  const { currency, axios, user } = useContext(MyContext);
+  const fetchOrders = async () => {
+    try {
+      const { data } = await axios.get("/order/user");
+      if (data.success) {
+        setMyOrders(data.orders);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    if (user) {
+      fetchOrders();
+    }
+  }, [user]);
   return (
     <div className="mt-16 pb-16">
       <div className="flex flex-col items-end w-max mb-8">

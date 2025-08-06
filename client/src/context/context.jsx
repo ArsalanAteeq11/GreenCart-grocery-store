@@ -148,6 +148,7 @@ export const MyContextProvider = ({ children }) => {
     products,
     currency,
     cartItems,
+    setCartItems,
     addToCart,
     updateCartItems,
     removeFromCart,
