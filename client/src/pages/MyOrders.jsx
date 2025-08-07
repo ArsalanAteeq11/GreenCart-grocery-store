@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { dummyAddress, dummyOrders } from "../assets/assets";
 import MyContext from "../context/context";
 import toast from "react-hot-toast";
 
