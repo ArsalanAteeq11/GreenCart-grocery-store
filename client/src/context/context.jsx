@@ -38,7 +38,9 @@ export const MyContextProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const { data } = await axios.get("/user/is-auth");
+      const { data } = await axios.get("/user/is-auth", {
+        withCredentials: true, // <== FORCE IT HERE
+      });
 
       if (data.success) {
         setIsUser(data.user);
