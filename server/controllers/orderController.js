@@ -115,7 +115,7 @@ export const stripeWebhooks = async (request, response) => {
     response.status(404).send(`Webhook error :  ${error.message}`);
   }
 
-  switch (key) {
+  switch (event.type) {
     case "payment_intent.succeeded": {
       const paymentIntent = event.data.object;
       const paymentIntentId = paymentIntent.id;
