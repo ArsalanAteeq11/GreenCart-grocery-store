@@ -30,8 +30,11 @@ export const register = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true, // prevent javascript to access cookie
-      secure: process.env.NODE_ENV === "production", // use secure cookies in production
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "Lax", // CSRF protection
+
+      secure: true,
+      sameSite: "None",
+      // secure: process.env.NODE_ENV === "production", // use secure cookies in production
+      // sameSite: process.env.NODE_ENV === "production" ? "none" : "Lax", // CSRF protection
       maxAge: 7 * 24 * 60 * 60 * 1000, // cookies expiration times
     });
 
@@ -70,8 +73,9 @@ export const login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "Lax",
+
+      secure: true,
+      sameSite: "None",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
