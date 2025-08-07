@@ -116,9 +116,9 @@ export const stripeWebhooks = async (request, response) => {
   }
 
   switch (key) {
-    case "paymet_intent.succeeded": {
-      const paymetIntent = event.data.object;
-      const paymentIntentId = paymetIntent.id;
+    case "payment_intent.succeeded": {
+      const paymentIntent = event.data.object;
+      const paymentIntentId = paymentIntent.id;
 
       // Getting session metadata
       const session = await stripeInstance.checkout.sessions.list({
@@ -135,9 +135,9 @@ export const stripeWebhooks = async (request, response) => {
       await User.findByIdAndUpdate(userId, { cartItems: {} });
       break;
     }
-    case "paymet_intent.payment_failed": {
-      const paymetIntent = event.data.object;
-      const paymentIntentId = paymetIntent.id;
+    case "payment_intent.payment_failed": {
+      const paymentIntent = event.data.object;
+      const paymentIntentId = paymentIntent.id;
 
       // Getting session metadata
       const session = await stripeInstance.checkout.sessions.list({
