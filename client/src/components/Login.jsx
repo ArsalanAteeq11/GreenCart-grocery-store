@@ -14,11 +14,17 @@ const Login = () => {
   const onSubmitHandler = async (event) => {
     try {
       event.preventDefault();
-      const { data } = await axios.post(`/user/${state}`, {
-        name,
-        email,
-        password,
-      });
+      const { data } = await axios.post(
+        `/user/${state}`,
+        {
+          name,
+          email,
+          password,
+        },
+        {
+          withCredentials: true, // ✅ Required for cookies to be set in deployment
+        }
+      );
       if (data.success) {
         navigate("/");
         toast.success(data.message);
