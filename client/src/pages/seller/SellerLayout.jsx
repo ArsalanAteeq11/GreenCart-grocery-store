@@ -5,12 +5,13 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const SellerLayot = () => {
-  const { axios, navigate } = useContext(MyContext);
+  const { axios, navigate, setIsSeller } = useContext(MyContext);
 
   const logout = async () => {
     try {
       const { data } = await axios.get("/seller/logout");
       if (data.success) {
+        setIsSeller(false);
         toast.success(data.message);
         navigate("/");
       } else {

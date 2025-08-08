@@ -13,11 +13,11 @@ export const MyContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setIsUser] = useState(null);
   const [isSeller, setIsSeller] = useState(false);
+  const [sellerEmail, setSellerEmail] = useState(null);
   const [showUserLogin, setShowUserLogin] = useState(false);
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState({});
   const [searchQuery, setSearchQuery] = useState({});
-  console.log("cartItems", cartItems);
 
   // fetch admin status
 
@@ -26,8 +26,10 @@ export const MyContextProvider = ({ children }) => {
       const { data } = await axios.get("/seller/is-auth");
       if (data.success) {
         setIsSeller(true);
+        setSellerEmail(data.sellerEmail);
       } else {
         setIsSeller(false);
+        setSellerEmail(null);
       }
     } catch (error) {
       console.log(error.message);
@@ -39,7 +41,7 @@ export const MyContextProvider = ({ children }) => {
   const fetchUser = async () => {
     try {
       const { data } = await axios.get("/user/is-auth", {
-        withCredentials: true, // <== FORCE IT HERE
+        withCredentials: true,
       });
 
       if (data.success) {
@@ -120,10 +122,9 @@ export const MyContextProvider = ({ children }) => {
   };
   useEffect(() => {
     fetchUser();
-    fetchSeller();
     fetchProducts();
+    fetchSeller();
   }, []);
-
   useEffect(() => {
     const updateCart = async () => {
       try {
@@ -145,6 +146,7 @@ export const MyContextProvider = ({ children }) => {
     setIsUser,
     isSeller,
     setIsSeller,
+    sellerEmail,
     showUserLogin,
     setShowUserLogin,
     products,
@@ -160,6 +162,7 @@ export const MyContextProvider = ({ children }) => {
     getCartCount,
     axios,
     fetchProducts,
+    fetchSeller,
   };
   return <MyContext.Provider value={value}>{children}</MyContext.Provider>;
 };

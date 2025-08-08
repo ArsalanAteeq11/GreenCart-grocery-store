@@ -3,9 +3,14 @@ import MyContext from "../../context/context";
 import toast from "react-hot-toast";
 
 const ProductList = () => {
-  const { products, currency, axios, fetchProducts } = useContext(MyContext);
+  const { products, currency, axios, fetchProducts, sellerEmail } =
+    useContext(MyContext);
 
   const toggleStock = async (id, inStock) => {
+    if (sellerEmail === import.meta.env.VITE_DEMO_SELLER_EMAIL) {
+      toast.error("Disabled in demo");
+      return;
+    }
     try {
       const { data } = await axios.post("/product/stock", { id, inStock });
       if (data.success) {

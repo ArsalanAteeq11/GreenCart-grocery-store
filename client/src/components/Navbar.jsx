@@ -16,7 +16,6 @@ const Navbar = () => {
     getCartCount,
     axios,
   } = useContext(MyContext);
-
   const logout = async () => {
     try {
       const { data } = await axios.get("/user/logout");
@@ -45,6 +44,12 @@ const Navbar = () => {
 
       {/* Desktop Menu */}
       <div className="hidden sm:flex items-center gap-8">
+        <button
+          onClick={() => navigate("/seller")}
+          className="cursor-pointer text-[12px] text-gray-600 px-8 py-[2px] border-primary border-1 rounded-full"
+        >
+          Admin
+        </button>
         <NavLink
           to="/"
           className={({ isActive }) =>
@@ -69,7 +74,7 @@ const Navbar = () => {
         >
           All Products
         </NavLink>
-        <NavLink
+        {/* <NavLink
           to="/contact"
           className={({ isActive }) =>
             `relative pb-[2px] ${
@@ -80,7 +85,7 @@ const Navbar = () => {
           }
         >
           Contact
-        </NavLink>
+        </NavLink> */}
 
         <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
           <input
@@ -161,7 +166,7 @@ const Navbar = () => {
       <div
         className={`${
           open ? "flex" : "hidden"
-        } absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden`}
+        } absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden z-50`}
       >
         <NavLink to="/" onClick={() => setOpen(false)}>
           Home

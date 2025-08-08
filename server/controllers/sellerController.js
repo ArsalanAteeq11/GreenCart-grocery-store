@@ -5,8 +5,10 @@ export const sellerLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (
-      email === process.env.SELLER_EMAIL &&
-      password === process.env.SELLER_PASSWORD
+      (email === process.env.SELLER_EMAIL ||
+        email === process.env.DEMO_SELLER_EMAIL) &&
+      (password === process.env.SELLER_PASSWORD ||
+        password === process.env.DEMO_SELLER_PASSWORD)
     ) {
       const token = jwt.sign({ email }, process.env.JWT_SECRET, {
         expiresIn: "7d",
@@ -38,7 +40,8 @@ export const sellerLogin = async (req, res) => {
 //Check isSellerAuth
 export const isSellerAuth = async (req, res) => {
   try {
-    return res.json({ success: true });
+    const sellerEmail = req.user.email;
+    return res.json({ success: true, sellerEmail });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });

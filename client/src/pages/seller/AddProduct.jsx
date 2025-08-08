@@ -11,10 +11,15 @@ const AddProduct = () => {
   const [price, setPrice] = useState("");
   const [offerPrice, setOfferPrice] = useState("");
 
-  const { axios } = useContext(MyContext);
+  const { axios, sellerEmail } = useContext(MyContext);
+  console.log("seller", sellerEmail);
   const onSubmitHandler = async (event) => {
+    event.preventDefault();
+    if (sellerEmail === import.meta.env.VITE_DEMO_SELLER_EMAIL) {
+      toast.error("Disabled in demo");
+      return;
+    }
     try {
-      event.preventDefault();
       const productData = {
         name,
         description: description.split("\n"),
@@ -40,7 +45,6 @@ const AddProduct = () => {
         setFiles([]);
       } else {
         toast.error(data.message);
-        console.log("dataaaa", data);
       }
     } catch (error) {
       console.log(error.message);

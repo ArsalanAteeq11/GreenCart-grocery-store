@@ -7,7 +7,11 @@ const authSeller = async (req, res, next) => {
   }
   try {
     const tokenDecode = jwt.verify(sellerToken, process.env.JWT_SECRET);
-    if (tokenDecode.email === process.env.SELLER_EMAIL) {
+    if (
+      tokenDecode.email === process.env.SELLER_EMAIL ||
+      tokenDecode.email === process.env.DEMO_SELLER_EMAIL
+    ) {
+      req.user = { email: tokenDecode.email };
       next();
     } else {
       return res.json({ success: false, message: "unauthorized" });

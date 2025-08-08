@@ -3,15 +3,21 @@ import MyContext from "../../context/context";
 import toast from "react-hot-toast";
 
 const SellerLogin = () => {
-  const { isSeller, setIsSeller, navigate, axios } = useContext(MyContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { isSeller, setIsSeller, navigate, axios, fetchSeller } =
+    useContext(MyContext);
+  const [email, setEmail] = useState(
+    import.meta.env.VITE_DEMO_SELLER_EMAIL || ""
+  );
+  const [password, setPassword] = useState(
+    import.meta.env.VITE_DEMO_SELLER_PASSWORD || ""
+  );
 
   const submitHandler = async (e) => {
     try {
       e.preventDefault();
       const { data } = await axios.post("/seller/login", { email, password });
       if (data.success) {
+        await fetchSeller();
         setIsSeller(true);
         navigate("/seller");
         console.log("data", data);
