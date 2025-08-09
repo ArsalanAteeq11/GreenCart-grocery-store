@@ -37,13 +37,13 @@ const Navbar = () => {
     }
   }, [searchQuery, navigate]);
   return (
-    <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all">
+    <nav className="flex items-center justify-between px-6 md:px-16  py-4 border-b border-gray-300 bg-white relative transition-all">
       <NavLink to="/" onClick={() => setOpen(false)}>
         <img className="h-9" src={assets.logo} alt="logo" />
       </NavLink>
 
       {/* Desktop Menu */}
-      <div className="hidden sm:flex items-center gap-8">
+      <div className="hidden md:flex items-center gap-7">
         <button
           onClick={() => navigate("/seller")}
           className="cursor-pointer text-[12px] text-gray-600 px-8 py-[2px] border-primary border-1 rounded-full"
@@ -139,7 +139,7 @@ const Navbar = () => {
         )}
       </div>
 
-      <div className="flex items-center gap-6 sm:hidden">
+      <div className="flex items-center gap-6 md:hidden">
         <div
           onClick={() => navigate("/cart")}
           className=" relative cursor-pointer"
@@ -175,18 +175,18 @@ const Navbar = () => {
           All Products
         </NavLink>
         {user && (
-          <NavLink to="/" onClick={() => setOpen(false)}>
+          <NavLink to="my-orders" onClick={() => setOpen(false)}>
             My Orders
           </NavLink>
         )}
-        <NavLink to="/" onClick={() => setOpen(false)}>
-          Contact
+        <NavLink to="/seller" onClick={() => setOpen(false)}>
+          Admin
         </NavLink>
         {!user ? (
           <button
             onClick={() => {
               setOpen(false);
-              setShowUserLogin(false);
+              setShowUserLogin(true);
             }}
             className="cursor-pointer px-6 py-2 mt-2 bg-primary hover:bg-primary-dull transition text-white rounded-full text-sm"
           >
